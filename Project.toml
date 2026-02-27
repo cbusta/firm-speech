@@ -1,7 +1,10 @@
 name = "Firm_Speech"
 uuid = "1366b6a0-a754-48b3-8ed0-e722b2ccdba6"
-authors = ["Christian Bustamante <cbustaam@gmail.com> and contributors"]
 version = "1.0.0-DEV"
+authors = ["Christian Bustamante <cbustaam@gmail.com> and contributors"]
+
+[deps]
+Lib_Julia_Econ = "50e02c98-9e02-494d-aa48-19397f072af1"
 
 [compat]
 julia = "1.10"
