@@ -43,7 +43,7 @@ end
 # -------------------------------------------------------------------
 # Create parameter structure
 # -------------------------------------------------------------------
-struct Struct_Param{T,GK,DK,GD,DD,GX,GW,GZ}
+struct Struct_Param{T,GK,DK,GD,DD,GX,GW,GZ,GZW}
     # Preference
     β::T                      # Discount factor
     σ::T                      # Coefficient of relative risk aversion
@@ -72,6 +72,7 @@ struct Struct_Param{T,GK,DK,GD,DD,GX,GW,GZ}
     # Idiosyncratic shocks
     ObjGrid_ω::GW             # Taste shifter grid object
     ObjGrid_Z::GZ             # Productivity shock grid object
+    ObjGrid_Zω::GZW           # Joint (Z,ω) process grid object
 end
 
 function Get_Params(;
@@ -128,6 +129,9 @@ function Get_Params(;
     ρ_z = 0.8,                  # Autoregressive parameter for z (idiosyncratic productivity)
     σ_z = 0.03,                 # Std dev of innovation to z (idiosyncratic productivity)
     ObjGrid_Z = make_stochproc(:tauchen, μ=μ_z, σ=σ_z, ρ=ρ_z, N=Nz, transf=:exp, name="Idiosyncratic Productivity Grid", width=3.0),
+    
+    # Joint (Z,ω) process (computed from individual processes)
+    ObjGrid_Zω = make_joint_stochproc(ObjGrid_Z, ObjGrid_ω, name="Joint (Z,ω)")
     )
 
     return Struct_Param(
@@ -136,6 +140,6 @@ function Get_Params(;
         ObjGrid_K, ObjDGrid_K,
         ObjGrid_D, ObjDGrid_D,
         δ_x, c_x, ObjGrid_X,
-        ObjGrid_ω, ObjGrid_Z
+        ObjGrid_ω, ObjGrid_Z, ObjGrid_Zω
     )
 end
