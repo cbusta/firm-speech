@@ -1,0 +1,683 @@
+%% LyX 2.4.2.1 created this file.  For more info, see https://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[11pt,american,english]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+\usepackage{babel}
+\usepackage{mathtools}
+\usepackage{dsfont}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage[letterpaper]{geometry}
+\geometry{verbose}
+\usepackage[authoryear]{natbib}
+\usepackage[bookmarks=false,
+ breaklinks=false,pdfborder={0 0 1},backref=section,colorlinks=true]
+ {hyperref}
+\hypersetup{
+ naturalnames=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+% AER-Article.tex for AEA last revised 22 June 2011
+
+
+% General packages from this template
+\usepackage[english]{babel}
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage{amsthm}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{enumerate}
+\usepackage[labelfont=sc]{caption}
+\usepackage[capposition=top]{floatrow}
+\usepackage{float}
+
+
+
+% New packages for this article
+\usepackage{siunitx}
+\usepackage{pdflscape}
+\usepackage{setspace}
+
+
+% General setup from the template
+\setlength{\abovecaptionskip}{0pt}
+\setlength{\belowcaptionskip}{0 pt}
+
+\newcommand{\fnote}[1]{\captionsetup{font=footnotesize}\caption*{#1}}
+
+\linespread{1.3}
+
+\newtheorem{theorem}{\textit{Theorem}}\newtheorem{proposition}[theorem]{\textit{Proposition}}\newtheorem{lemma}{\textit{Lemma}}\newtheorem{corollary}{\textit{Corollary}}\newtheorem{definition}{\textit{Definition}}\renewcommand{\qedsymbol}{$\blacksquare$}
+% \newenvironment{definition}[1][Definition.]{\begin{trivlist}
+% \item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{assumption}[1][Assumption.]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\renewcommand*{\theenumi}{\roman{enumi}}
+\renewcommand*{\labelenumi}{(\theenumi)}
+
+
+\renewcommand{\@biblabel}[1]{}
+
+
+\renewcommand{\thetable}{\Roman{table}}
+\captionsetup[table]{labelformat=simple, labelsep=newline, textfont = {sc}}
+\captionsetup[figure]{labelformat=simple}
+
+
+
+% New setup for this article
+
+\newcommand{\MatrixVector}[1]{{\mbox{\boldmath $#1$}}}
+
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\ForAll}{\,\forall\,}
+
+\renewcommand{\textfraction}{0.01}
+\renewcommand{\topfraction}{0.99}
+\renewcommand{\bottomfraction}{0.99}
+
+\newcommand*{\diff}{\mathop{}\!\mathrm{d}}
+\newcommand*{\Diff}[1]{\mathop{}\!\mathrm{d}#1}
+\newcommand{\ME}[2]{\ensuremath{#1^{\mathrm{me}}_{#2}}}
+\newcommand{\Central}{^{\mathrm{c}}}
+\newcommand{\Decentral}{^{\mathrm{d}}}
+\newcommand{\Unemployed}{^{\mathrm{u}}}
+\newcommand{\Employed}{^{\mathrm{e}}}
+\newcommand{\Out}{^{\mathrm{o}}}
+\newcommand{\Entre}{^{\mathrm{e}}}
+\newcommand{\InvestShock}{^{\mathrm{I}}}
+\newcommand{\House}{^{\mathrm{h}}}
+\newcommand{\Transit}{^{\mathrm{ue}}}
+\newcommand{\search}{^{\mathrm{s}}}
+\newcommand{\Search}{_{\mathrm{s}}}
+\newcommand{\Consume}{_{\mathrm{c}}}
+\newcommand{\SocialPlanner}{_{\mathrm{sp}}}
+\newcommand{\Retire}{^{\mathrm{r}}}
+\newcommand{\SteadyState}{_{\!\mathrm{ss}}}
+\newcommand{\Labor}{^{\mathrm{y}}}
+\newcommand{\labor}{_{\mathrm{y}}}
+\newcommand{\Capital}{^{\mathrm{k}}}
+
+
+\usepackage{tikz}% for timeline
+\usepackage{rotating}
+\usetikzlibrary{arrows}
+\usetikzlibrary{shapes,snakes}
+\usetikzlibrary{positioning} 
+
+\usetikzlibrary{calc}
+\usepackage{relsize}
+
+
+%\usepackage{amsmath, amssymb,mathrsfs}  
+\usepackage{siunitx}
+\sisetup{
+input-symbols = {()},
+group-digits  = false,
+explicit-sign
+}
+
+\frenchspacing
+
+% \usepackage[none]{hyphenat}
+% \usepackage{microtype}
+% \DisableLigatures{encoding = *, family = * }
+
+\providecommand{\noopsort}[1]{}
+\renewcommand{\topfraction}{0.9} % max fraction of floats at top
+\renewcommand{\bottomfraction}{0.8} % max fraction of floats at bottom
+\setcounter{topnumber}{2}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4} % 2 may work better
+\setcounter{dbltopnumber}{2} % for 2-column pages
+\renewcommand{\dbltopfraction}{0.9} % fit big float above 2-col. text
+\renewcommand{\textfraction}{0.07} % allow minimal text w. figs
+%   Parameters for FLOAT pages (not text pages):
+\renewcommand{\floatpagefraction}{0.7}	% require fuller float pages
+    % N.B.: floatpagefraction MUST be less than topfraction !!
+\renewcommand{\dblfloatpagefraction}{0.7}	% require fuller float pages
+
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{textpos}% for exact text positions
+\usepackage{graphicx}
+\usepackage{epstopdf}
+
+
+% code for epigraph
+
+\newenvironment{chapquote}[2][2em]{\setlength{\@tempdima}{#1}%
+   \def\chapquote@author{#2}%
+   \parshape 1 \@tempdima \dimexpr\textwidth-2\@tempdima\relax%
+   \itshape}{\par\normalfont\hfill--\ \chapquote@author\hspace*{\@tempdima}\par\bigskip}
+
+\makeatother
+
+\begin{document}
+\title{{\Large\textbf{Model: Firm Dynamics and Political Capital}}}
+\date{{\small\today}}
+
+\maketitle
+ 
+
+\section*{Households}
+
+\paragraph{Preferences.}
+
+A representative household has preferences 
+\[
+\sum_{t=0}^{\infty}\beta^{t}\log(c_{t}),\qquad\beta\in(0,1).
+\]
+
+Aggregate consumption is Cobb--Douglas between the non-differentiated
+good $c_{t}^{n}$ and the political composite $c_{t}^{p}$: 
+\[
+c_{t}=(c_{t}^{n})^{1-\xi}(c_{t}^{p})^{\xi},\qquad\xi\in(0,1).
+\]
+
+Political consumption is a linear aggregator of $c_{t}^{p}(i)\geq0$
+over a time-varying set of varieties $\mathcal{I}_{t}$ with weights
+$\omega_{it}>0$: 
+\[
+c_{t}^{p}=\int_{\mathcal{I}_{t}}\omega_{it}\,c_{t}^{p}(i)\,di.
+\]
+Let $p_{t}(i)$ denote the real price of variety $i$, and let $p_{t}^{p}$
+denote the real shadow price per effective unit of $c_{t}^{p}$. The
+taste shifter $\omega_{it}$ follows a persistent AR(1) process in
+logs: 
+\[
+\log\omega_{i,t+1}=\rho_{\omega}\log\omega_{it}+\sigma_{\omega}\varepsilon_{i,t+1}^{\omega},\qquad\rho_{\omega}\in(0,1),
+\]
+with $\varepsilon_{i,t+1}^{\omega}\sim i.i.d.\ N(0,1)$.
+
+\paragraph{Optimization.}
+
+Households trade a one-period risk-free bond that pays $1$ unit of
+the numeraire at $t+1$. Let $R_{t}$ denote the gross real interest
+rate and let $b_{t+1}$ denote bond holdings chosen at $t$. Let $\Pi_{t}$
+denote lump-sum transfers from firms.
+
+The budget constraint is 
+\[
+c_{t}^{n}+\int_{\mathcal{I}_{t}}p_{t}(i)c_{t}^{p}(i)\,di+\frac{b_{t+1}}{R_{t}}=\Pi_{t}+b_{t}.
+\]
+Define total real consumption expenditure 
+\[
+C_{t}\equiv c_{t}^{n}+\int_{\mathcal{I}_{t}}p_{t}(i)c_{t}^{p}(i)\,di=c_{t}^{n}+p_{t}^{p}c_{t}^{p}.
+\]
+
+
+\paragraph{Key conditions.}
+
+(i) Political varieties: 
+\[
+\frac{p_{t}(i)}{\omega_{it}}\ge p_{t}^{p}\ \ \forall i\in\mathcal{I}_{t},\qquad\frac{p_{t}(i)}{\omega_{it}}=p_{t}^{p}\ \ \text{if }c_{t}^{p}(i)>0.
+\]
+
+(ii) Non-differentiated vs.\ political composite: 
+\[
+p_{t}^{p}=\frac{\xi}{1-\xi}\frac{c_{t}^{n}}{c_{t}^{p}},\qquad c_{t}^{n}=(1-\xi)C_{t},\quad p_{t}^{p}c_{t}^{p}=\xi C_{t}.
+\]
+
+(iii) Risk-free bond Euler equation: 
+\[
+\frac{1}{C_{t}}=\beta R_{t}\,\mathbb{E}_{t}\!\left[\frac{1}{C_{t+1}}\right].
+\]
+
+
+\section*{Firms}
+
+Firms are indexed by $j\in[0,1]$.
+
+\paragraph{Technologies.}
+
+Firms have access to a technology to produce the undifferentiated
+good given by: 
+\[
+y_{jt}=z_{jt}k_{jt}^{\alpha},\qquad\alpha\in(0,1),
+\]
+with productivity follows a persistent AR(1) process (in logs): 
+\[
+\log z_{j,t+1}=(1-\rho_{z})\log\bar{z}+\rho_{z}\log z_{jt}+\sigma_{z}\varepsilon_{j,t+1}^{z},\qquad\rho_{z}\in(0,1),
+\]
+with $\varepsilon_{j,t+1}^{z}\sim i.i.d.\ N(0,1)$.
+
+Firms have access to a technology to accumulate physical capital.
+\[
+k_{j,t+1}=(1-\delta)k_{jt}+i_{jt},\qquad\delta\in(0,1).
+\]
+
+Firms can differentiate their output by accumulating political capital
+$x_{jt}\in\{0,1\}$. Firms that currently have no political capital
+can accumulated it with political engagement $e_{jt}\in\{0,1\}$ (that
+maps to political speech). Political capital depreciates with probability
+$\delta_{x}$. Let $\nu_{j,t+1}\in\{0,1\}$ denote a political-capital
+survival indicator: $\nu_{j,t+1}=1$ if the firm retains its political
+capital between $t$ and $t+1$, and $\nu_{j,t+1}=0$ otherwise, with
+\[
+\Pr(\nu_{j,t+1}=1)=1-\delta_{x},\qquad\Pr(\nu_{j,t+1}=0)=\delta_{x}.
+\]
+Political-capital then follows the law of motion: 
+\[
+x_{j,t+1}=x_{jt}\nu_{j,t+1}+(1-x_{jt})e_{jt}.
+\]
+
+Every period they exit with probability $\chi$ after production and
+are replaced by an equal mass of firms. When firms exit they transfer
+their net worth to households.
+
+\paragraph{Prices.}
+
+Let $\iota:[0,1]\to[0,1]$ be a one-to-one mapping from firm indices
+$j$ to potential political varieties $i=\iota(j)$. Define the variety-specific
+taste shifter faced by firm $j$ as 
+\[
+\omega_{jt}\equiv\omega_{\iota(j),t}.
+\]
+
+Let $p_{t}^{p}$ denote the competitive price per effective unit of
+the political composite. The firm takes prices as given and receives
+the unit output price 
+\[
+p_{t}(x_{jt},\omega_{jt})=\begin{cases}
+1, & x_{jt}=0,\\
+\omega_{jt}\,p_{t}^{p}, & x_{jt}=1.
+\end{cases}
+\]
+
+
+\paragraph{Financing.}
+
+The firm can issue one-period debt. Let $d_{jt}$ be debt due at $t$
+(promised repayment made at $t-1$) and let $d_{j,t+1}$ be promised
+repayment next period. The gross real interest rate is $R_{t}$.
+
+The flow-of-funds constraint is given by: 
+\[
+\mathrm{div}_{jt}=\pi_{t}(k_{jt},x_{jt},z_{jt},\omega_{jt},e_{jt})-i_{jt}-\Phi(k_{j,t+1},k_{jt})+\frac{d_{j,t+1}}{R_{t}}-d_{jt}.
+\]
+where $\pi_{t}(k_{jt},x_{jt},z_{jt},\omega_{jt},e_{jt})=p_{t}(x_{jt},\omega_{jt})\,z_{jt}k_{jt}^{\alpha}-c_{x}e_{jt}$
+denote operating earnings and $\Phi(k_{j,t+1},k_{jt})$ denote a capital
+adjustment cost in units of the undifferentiated good.
+
+Firms face an earning-based borrowing constraint of the form: 
+\[
+d_{j,t+1}\le\phi\,\pi_{t}(k_{jt},x_{jt},z_{jt},\omega_{jt},e_{jt}),\qquad\phi\ge0.
+\]
+In addition, they cannot issue equity $\mathrm{div}_{jt}\ge0$.
+
+\paragraph{Optimization.}
+
+Let the firm’s idiosyncratic state be $s=(k,x,d,z,\omega)$ and $\omega\equiv\omega_{\iota(j)}$
+the variety if the firm has political capital. Let $\Lambda_{t+1}$
+denote the stochastic discount factor. Firms' recursive problem is
+given by: 
+\[
+V_{t}(s)=\max_{\mathrm{div}\ge0,i,\,e\in\{0,1\},\,d'}\left\{ \mathrm{div}+\mathbb{E}_{t}\Big[\Lambda_{t+1}\Big((1-\chi)\,V_{t+1}(s')+\chi\,n_{t+1}(s')\Big)\Big]\right\} ,
+\]
+subject to 
+\begin{align}
+k' & =(1-\delta)k+i,\\
+x' & =x\,\nu_{t+1}+(1-x)e,\\
+\mathrm{div} & =\pi_{t}(k,x,z,\omega,e)-i-\Phi(k',k)+\frac{d'}{R_{t}}-d,\\
+\pi_{t}(k,x,z,\omega,e) & =p_{t}(x,\omega)\,z\,k^{\alpha}-c_{x}e,\\
+d' & \le\phi\,\pi_{t}(k,x,z,\omega,e),
+\end{align}
+where net worth is defined by $n_{t}(s)\equiv p_{t}(x,\omega)\,z\,k^{\alpha}-c_{x}\hat{e}_{t}(s)+(1-\delta)k-d$
+
+\paragraph{Political engagement decision.}
+
+For a firm with $x=0$, political engagement $e\in\{0,1\}$ pins down
+next-period political status: $x'=e$. Define continuation values
+conditional on the engagement choice: 
+\[
+\mathcal{V}_{t}^{n}(k,d,z,\omega)\equiv\max_{i,\,d'}\left\{ \mathrm{div}\big|_{e=0}+\mathbb{E}_{t}\!\left[\Lambda_{t+1}\Big((1-\chi)\,V_{t+1}(k',0,d',z',\omega')+\chi\,n'\Big)\right]\right\} ,
+\]
+\[
+\mathcal{V}_{t}^{p}(k,d,z,\omega)\equiv\max_{i,\,d'}\left\{ \mathrm{div}\big|_{e=1}+\mathbb{E}_{t}\!\left[\Lambda_{t+1}\Big((1-\chi)\,V_{t+1}(k',1,d',z',\omega')+\chi\,n'\Big)\right]\right\} .
+\]
+The optimal engagement rule satisfies 
+\[
+e=1\quad\Longleftrightarrow\quad\mathcal{V}_{t}^{p}(k,d,z,\omega)\ \ge\ \mathcal{V}_{t}^{n}(k,d,z,\omega).
+\]
+For $x'=1$, the firm receives the political-market price $p_{t}(1,\omega)=\omega\,p_{t}^{p}$,
+which can exceed $1$, but pays the engagement cost $c_{x}$ and becomes
+exposed to additional cash-flow volatility through $\omega$.
+
+\section*{Equilibrium}
+
+\paragraph{Set of political varieties.}
+
+Let the set of politically active firms at time $t$ be 
+\[
+\mathcal{J}_{t}^{p}\equiv\{j\in[0,1]:x_{jt}=1\},\qquad X_{t}\equiv\int_{0}^{1}x_{jt}\,dj.
+\]
+The set of political varieties available for trade at time $t$ is
+endogenous and given by 
+\[
+\mathcal{I}_{t}\equiv\{\,\iota(j):j\in\mathcal{J}_{t}^{p}\,\},
+\]
+with measure 
+\[
+\int_{\mathcal{I}_{t}}di=X_{t}.
+\]
+
+
+\paragraph{Market clearing.}
+
+For each active variety $i\in\mathcal{I}_{t}$, let $j(i)$ denote
+the inverse mapping (so that $\iota(j(i))=i$). Variety-by-variety
+clearing: 
+\[
+c_{t}^{p}(i)=y_{j(i),t}=z_{j(i),t}k_{j(i),t}^{\alpha},\qquad\forall i\in\mathcal{I}_{t}.
+\]
+Aggregate political composite: 
+\[
+c_{t}^{p}=\int_{\mathcal{I}_{t}}\omega_{it}\,c_{t}^{p}(i)\,di=\int_{0}^{1}x_{jt}\,\omega_{\iota(j),t}\,z_{jt}k_{jt}^{\alpha}\,dj.
+\]
+
+The non-differentiated good is used for household consumption, physical
+investment, capital adjustment costs, and political engagement costs:
+\[
+c_{t}^{n}+\int_{0}^{1}i_{jt}\,dj+\int_{0}^{1}\Phi(k_{j,t+1},k_{jt})\,dj+c_{x}\int_{0}^{1}e_{jt}\,dj=\int_{0}^{1}(1-x_{jt})\,z_{jt}k_{jt}^{\alpha}\,dj.
+\]
+
+Bond market clearing: 
+\[
+b_{t+1}=\int_{0}^{1}d_{j,t+1}\,dj.
+\]
+
+
+\section*{Solving the firm's problem}
+
+The value of a continuing firm, conditional on its engagement choice
+$e$, is given by 
+\begin{align*}
+v_{t}^{\text{cont}}\left(s\,|\,e\right)= & \max_{k^{\prime},d^{\prime}}\,n_{t}\left(s\right)-k^{\prime}-\Phi\left(k^{\prime},k\right)+\frac{d^{\prime}}{R_{t}}+\Lambda_{t,t+1}\mathbb{E}_{t}\left[\left(1-\chi\right)v\left(s^{\prime}\right)+\chi n^{\prime}\,|\,z,\omega\right],
+\end{align*}
+subject to $\text{div}_{t}\geq0$ and $d^{\prime}\le\phi\,\pi_{t}\left(k,x,z,\omega,e\right)$,
+where $n_{t}\left(s\right)\equiv p_{t}\left(x,\omega\right)\,z\,k^{\alpha}-c_{x}e+\left(1-\delta\right)k-d$
+is net worth, the expectation $\mathbb{E}_{t}$ is taken over the
+distribution of next period's exogenous idiosyncratic state $\left(z^{\prime},\omega^{\prime}\right)$,
+and $v\left(s\right)=\max\left\{ v_{t}^{\text{cont}}\left(s\,|\,e=0\right),v_{t}^{\text{cont}}\left(s\,|\,e=1\right)\right\} $.
+
+Writing down the Lagrangian for this problem, we have 
+\begin{align*}
+\mathcal{L} & =\left(1+\lambda_{t}\left(s\right)\right)\left(n_{t}\left(s\right)-k^{\prime}-\Phi\left(k^{\prime},k\right)+\frac{d^{\prime}}{R_{t}}\right)+\Lambda_{t,t+1}\mathbb{E}_{t}\left[\left(1-\chi\right)v\left(s^{\prime}\right)+\chi n^{\prime}\,|\,z,\omega\right]\\
+ & +\xi_{t}\left(s\right)\left(\phi\,p_{t}\left(x,\omega\right)zk^{\alpha}-c_{x}e-d^{\prime}\right),
+\end{align*}
+
+First order condition for capital: 
+\begin{align*}
+\left(1+\lambda_{t}\left(s\right)\right)\left(1+\Phi_{1}\left(k^{\prime},k\right)\right) & =\Lambda_{t,t+1}\mathbb{E}_{t}\left[\left(1-\chi\right)\frac{\partial v\left(s^{\prime}\right)}{\partial k^{\prime}}+\chi\frac{\partial n^{\prime}}{k^{\prime}}\right],
+\end{align*}
+
+The envelope condition for capital is given by 
+\begin{align*}
+\frac{\partial v\left(s\right)}{\partial k} & =\left(1+\lambda_{t}\left(s\right)\right)\left(p_{t}(x,\omega)z\alpha k^{\alpha-1}+(1-\delta)-\Phi_{2}\left(k^{\prime},k\right)\right)+\xi_{t}\left(s\right)\phi p_{t}(x,\omega)z\alpha k^{\alpha-1}.
+\end{align*}
+
+Using these two conditions, and defining $\text{MPK}_{t+1}\equiv p_{t+1}(x^{\prime},\omega^{\prime})z^{\prime}\alpha(k^{\prime})^{\alpha-1}$,
+we can rewrite the first order condition for capital as, 
+\begin{align}
+\left(1+\lambda_{t}\left(s\right)\right)\left(1+\Phi_{1}\left(k^{\prime},k\right)\right) & =\Lambda_{t,t+1}\mathbb{E}_{t}\left[\left(1+\left(1-\chi\right)\lambda(s^{\prime})\right)\left(\text{MPK}_{t+1}+1-\delta\right)\right.\label{eq:foc_k}\\
+ & -\left.\left(1-\chi\right)(1+\lambda\left(s^{\prime}\right))\Phi_{2}\left(k^{\prime\prime},k^{\prime}\right)+\left(1-\chi\right)\xi\left(s^{\prime}\right)\phi\text{MPK}_{t+1}\right]\nonumber 
+\end{align}
+
+First order condition for debt: 
+\begin{align*}
+\left(1+\lambda_{t}\left(s\right)\right)\frac{1}{R_{t}}+\mathbb{E}_{t}\left[\left(1-\chi\right)\frac{\partial v\left(s^{\prime}\right)}{\partial d^{\prime}}-\chi\right] & =\xi_{t}\left(s\right)
+\end{align*}
+
+The envelope condition for debt is given by 
+\begin{align*}
+\frac{\partial v\left(s\right)}{\partial d} & =-\left(1+\lambda_{t}\left(s\right)\right)
+\end{align*}
+
+Using these two conditions, we can rewrite the first order condition
+for debt as, 
+\begin{align}
+\xi_{t}\left(s\right) & =\left(1+\lambda_{t}\left(s\right)\right)\frac{1}{R_{t}}-\Lambda_{t,t+1}\mathbb{E}_{t}\left[1+\left(1-\chi\right)\lambda\left(s^{\prime}\right)\right].\label{eq:d_foc}
+\end{align}
+
+We now have two first order conditions and the following complementary
+slackness conditions: 
+\begin{align*}
+\lambda_{t}\left(s\right) & \geq0,\quad\text{div}_{t}\geq0,\quad\lambda_{t}\left(s\right)\text{div}_{t}=0,\\
+\xi_{t}\left(s\right) & \geq0,\quad d^{\prime}\le\phi\,\pi_{t}\left(k,x,z,\omega,e\right),\quad\xi_{t}\left(s\right)\left(d^{\prime}-\phi\,\pi_{t}\left(k,x,z,\omega,e\right)\right)=0.
+\end{align*}
+
+
+\section*{Partitioning the state space}
+
+Our state space is $s=\left(k,x,d,z,\omega\right)$. Note that net
+worth is linear in debt, so we can equivalently write the state space
+as $s=(k,x,n,z,\omega)$. We can partition the state space into three
+regions as a function of net worth $n\left(k,x,z,\omega\right)$.
+
+\subsection*{Unconstrained firms}
+
+A financial unconstrained firm choices are independent of its financial
+position, can operate at its efficient scale, it is indifferent between
+$d^{\prime}$ and $\text{div}$, and for which the marginal value
+of savings in the same as for households. This means that $\lambda_{t+\tau}=\xi_{t+\tau}=0$
+for $\tau\geq0$. To show that its choices are independent of its
+financial position, we will guess and verify that these choices are
+given by $k^{*}(k,x,z,\omega)$, and $d^{*}(k,x,z,\omega)$. To resolve
+the indeterminacy between savings and dividends, we assume that these
+firms implement a minimum savings policy, a firm's savings rule that
+guarantees that the firm is never financially constrained in the future
+under any possible paths of $(z,\omega)$. This policy is given by
+the most debt (or least savings) that leave the firm unconstrained
+in any future solves: 
+\begin{equation}
+d_{t}^{*}\left(k,x,z,\omega\right)=\min_{\left(z^{\prime},\omega^{\prime}\right)\in\mathbf{Z}\times\mathbf{\Omega}}\tilde{d}_{t+1}\left(k_{t}^{*}\left(k,x,z,\omega\right),x^{\prime},z^{\prime},\omega^{\prime}\right)\label{eq:msp}
+\end{equation}
+where 
+\begin{align*}
+\tilde{d}_{t}\left(k,x,z,\omega\right) & =\min_{e\in\left\{ 0,1\right\} }\tilde{\pi}_{t}\left(k,x,z,\omega,e\right)+\left(1-\delta\right)k-k^{*}\left(k,x,z,\omega\right)\\
+ & -\Phi\left(k^{*}\left(k,x,z,\omega\right),k\right)+\frac{1}{R_{t+1}}d^{*}\left(k,x,z,\omega\right)
+\end{align*}
+This contraction guarantees that $\text{div}_{t+\tau}\geq0$ for $\tau\geq0$.
+Note that we consider only the case in which there is engagement whenever
+possible, as it would be the ``worst case scenario''. If a firm
+can remain unconstrained in this case, it will remain unconstrained
+in any case. This means that
+\[
+\text{arg}\min_{e\in\left\{ 0,1\right\} }\tilde{\pi}_{t}\left(k,x,z,\omega,e\right)=\begin{cases}
+e=0 & \text{if }x=1\\
+e=1 & \text{if }x=0
+\end{cases}
+\]
+
+Define the problem of a firm adopting these policies as: 
+\begin{align}
+v_{t}^{*}\left(k,x,z,\omega\right) & =n_{t}-k^{*}\left(k,x,z,\omega\right)-\Phi\left(k^{*},k\right)+\frac{1}{R_{t}}d^{*}\left(k,x,z,\omega\right)\nonumber \\
+ & +\Lambda_{t,t+1}\mathbb{E}_{t}\left[\left(1-\chi\right)v^{*}\left(k^{\prime},x^{\prime},z^{\prime},\omega^{\prime}\right)+\chi n^{\prime}\right]\label{eq:value_uncons}
+\end{align}
+Policies and continuation values are independent of $n$, thus we
+can write $v^{*}\left(k,x,z,\omega\right)=n+\overline{v}^{*}\left(k,x,z,\omega\right)$,
+where 
+\begin{align*}
+\overline{v}^{*}\left(k,x,z,\omega\right) & =-k^{*}\left(k,x,z,\omega\right)-\Phi\left(k^{*},k\right)+\frac{1}{R_{t}}d^{*}\left(k,x,z,\omega\right)\\
+ & +\Lambda_{t,t+1}\mathbb{E}_{t}\left[\left(1-\chi\right)v^{*}\left(k^{\prime},x^{\prime},z^{\prime},\omega^{\prime}\right)+\chi n^{\prime}\right]
+\end{align*}
+Implying that the value of an unconstrained firm is linearly separable
+in net worth (and that the marginal value of internal net worth is
+1). From this simplified problem, we obtain the following optimality
+condition for capital: 
+\begin{align}
+1+\Phi_{1}\left(k^{\prime},k\right) & =\Lambda_{t,t+1}\mathbb{E}_{t}\left[\text{MPK}_{t+1}+1-\delta-\left(1-\chi\right)\Phi_{2}\left(k^{\prime\prime},k^{\prime}\right)\right]\label{eq:k_efficient}
+\end{align}
+\foreignlanguage{american}{which is a frictionless (with-adjustment-costs)
+policy. If these policies are feasible they are also optimal: once
+the unconstrained allocation is feasible today and in any future time,
+constraints do not distort choices, so the unconstrained allocation
+is optimal. A firm with high-enough net worth that allows it to implement
+these policies, is one in which the limited liability constraint is
+not violated 
+\[
+n-k^{*}\left(k,x,z,\omega\right)-\Phi(k^{*},k)+\frac{1}{R_{t}}d^{*}\left(k,x,z,\omega\right)\geq0
+\]
+A condition which is satisfied only if 
+\begin{equation}
+n\geq\overline{n}\left(s\right)\equiv k^{*}\left(k,x,z,\omega\right)+\Phi(k^{*},k)-\frac{1}{R_{t}}d^{*}\left(k,x,z,\omega\right)\label{eq:cutoff_uncons}
+\end{equation}
+}
+
+\subsection*{Constrained firms}
+
+Constrained firms are defined as firms with $\lambda_{t}\left(s\right)>0$.
+By construction, these firms cannot implement the unconstrained policies.
+Among these firms, there are two subset of firms: (i) firms that are
+currently constrained, so that the borrowing constraint is binding
+and $\xi_{t}\left(s\right)>0$, and (ii) partially constrained firms,
+which does not currently have a binding borrowing constraint, but
+may be constrained in the future.
+
+\subsubsection*{Currently constrained firms}
+
+These firms have a binding borrowing constraint, so their debt choice
+is pinned down by it 
+\begin{equation}
+d^{c}\left(s\right)=\phi\pi_{t}\left(k,x,z,\omega,e\right)\label{eq:dprime_currcons}
+\end{equation}
+Further, as their dividend constraint is binding, their capital choice
+is determined by it 
+\begin{equation}
+n_{t}-k^{c}\left(s\right)-\Phi\left(k^{c}\left(s\right),k\right)+\frac{1}{R_{t}}d^{c}\left(s\right)=0\label{eq:kprime_currcorns}
+\end{equation}
+
+
+\subsubsection*{Partially constrained firms}
+
+Finally, the partially constrained firms solve the system of optimality
+conditions derived before. Denote their choices by $k^{p}\left(s\right)$,
+and $d^{p}\left(s\right)$. These policies are feasible as long as
+\[
+n\geq\underline{n}\left(s\right)\equiv k^{p}\left(s\right)+\Phi(k^{p}\left(s\right),k)-\frac{1}{R_{t}}d^{p}\left(s\right)\geq0
+\]
+
+\selectlanguage{american}%
+
+\section*{Stationary equilibrium: numerical solution}
+
+\selectlanguage{english}%
+Assume the following capital adjustment cost function: 
+\begin{equation}
+\Phi\left(k^{\prime},k\right)=\frac{\psi}{2}\left[\frac{k^{\prime}}{k}-\left(1-\delta\right)\right]^{2}k\label{eq:kadj_fnc}
+\end{equation}
+Given a vector of prices $\left\{ R_{t},\Lambda_{t,t+1},p_{t}^{p}\right\} $,
+\foreignlanguage{american}{we can exploit the partition of the state
+space defined before. First, let's solve the unconstrained firm problem.
+We can then use their solution along with the optimality conditions
+to solve the problem of all firms.}
+
+\selectlanguage{american}%
+
+\selectlanguage{english}%
+
+\subsection*{Unconstrained firm decisions}
+\begin{enumerate}
+\item Guess a value $v^{*}\left(s\right)$, and a policy for $k^{*}\left(s\right)$.
+Also, guess some engagement policy for these firms, $e^{*}\left(s\right)\in\left\{ 0,1\right\} $.
+We do not need to guess $e^{*}\left(s\right)$ for firms $x=1$, as
+we are assuming $e=0$ for them.
+\item Determine the efficient scale of operation $k^{*}\left(s\right)$
+using \eqref{eq:k_efficient}. Given the presence of convex adjustment
+costs, we need to solve this numerically for $k^{*}\left(s\right)=k^{*}\left(k,x,{\color{lightgray}d},z,\omega\right)$.
+Define: 
+\begin{align*}
+G\left(k^{\prime}|k,x,z,\omega,k^{*}\left(s\right)\right) & =1+\Phi_{1}\left(k^{\prime},k\right)\\
+ & -\Lambda_{t,t+1}\mathbb{E}_{t}\left[p_{t+1}(x^{\prime},\omega^{\prime})z^{\prime}\alpha\left(k^{\prime}\right)^{\alpha-1}+1-\delta-\left(1-\chi\right)\Phi_{2}\left({\color{red}k^{*}}\mathinner{\color{red}\left(s^{\prime}\right)},k^{\prime}\right)\right]
+\end{align*}
+We can iterate over the policy function $k^{*}\left(s\right)$, while
+solving $G\left(k^{\prime}\right)=0$, starting from an initial \textcolor{red}{guess}
+for it. Do this until convergence. Note that everything is know from
+the state space, except $x^{\prime}$, which we are taking from Step
+1. 
+\item Solve the minimum savings policy in \eqref{eq:msp}. 
+\[
+d_{t}^{*}\left(k,x,z,\omega\right)=\min_{\left(z^{\prime},\omega^{\prime}\right)\in\mathbf{Z}\times\mathbf{\Omega}}\tilde{d}_{t+1}\left(k_{t}^{*}\left(k,x,z,\omega\right),x^{\prime},z^{\prime},\omega^{\prime}\right)
+\]
+where 
+\begin{align*}
+\tilde{d}_{t}\left(k,x,z,\omega\right) & =\pi_{t}\left(k,x,z,\omega,e\right)+\left(1-\delta\right)k-k^{*}\left(k,x,z,\omega\right)\\
+ & -\Phi\left(k^{*}\left(k,x,z,\omega\right),k\right)+\frac{1}{R_{t+1}}d^{*}\left(k,x,z,\omega\right)
+\end{align*}
+\item Update the value of the unconstrained firm \eqref{eq:value_uncons}
+using the previous iteration of $k^{*}\left(s\right)$. When $x=0$,
+do this for both engagement options $e\in\left\{ 0,1\right\} $, and
+update $v^{*}\left(s\right)=\max\left\{ v^{*p}\left(s\right),v^{*n}\left(s\right)\right\} $,
+and $e^{*}\left(s\right)=\text{argmax}_{e}\left\{ v^{*p}\left(s\right),v^{*n}\left(s\right)\right\} $. 
+
+\textcolor{red}{Something to consider: Why do we want net worth to
+include the cost of political engagement? It is considered as investment
+in political capital for next period, $x^{\prime}$, similar to $k^{\prime}$.
+It should show up on dividends, but not on net worth. Why is this
+relevant: computational reasons: The continuation value when exiting
+needs to be evaluated in $e^{\prime}$ as long as $e^{\prime}$ is
+part of $\pi^{\prime}$ and hence of $n^{\prime}$ (given that exit
+happens right after production, again, should we consider the cost
+of $e^{\prime}$?)}
+\item Compute the cutoff $\overline{n}$$\left(s\right)$ using \eqref{eq:cutoff_uncons}.
+\end{enumerate}
+
+\subsection*{Firm decisions}
+\begin{enumerate}
+\item Guess a value $v\left(s\right)$, a policy for $k\left(s\right)$
+and $d\left(s\right)$, and a multipliers $\lambda\left(s\right)$
+and $\xi\left(s\right)$. Also, guess some engagement policy firms,
+$e\left(s\right)\in\left\{ 0,1\right\} $. 
+\item For every point in the state space $s$, check if $n\left(s\right)\geq\overline{n}\left(s\right)$.
+If so, set $k^{\prime}=k^{*}\left(s\right)$, $d^{\prime}=d^{*}\left(s\right)$,
+$e=e^{*}\left(s\right)$, and $v=v^{*}\left(s\right)$ at those points
+in $\mathbf{S}$. 
+\item If not, let's solve the capital and debt policies for both values
+$e=\left\{ 0,1\right\} $. Assume that the borrowing constraint is
+not binding. Use the optimality condition for capital \eqref{eq:foc_k}
+to update the $k^{\prime}$ policy using 
+\begin{align*}
+G\left(k^{\prime}\right) & =\left(1+\Phi_{1}\left(k^{\prime},k\right)\right)\left(1+\lambda_{t}\left(s\right)\right)\\
+ & -\Lambda_{t,t+1}\mathbb{E}_{t}\left[\left(1+\left(1-\chi\right)\lambda(s^{\prime})\right)\left(p_{t+1}(x^{\prime},\omega^{\prime})z^{\prime}\alpha\left(k^{\prime}\right)^{\alpha-1}+1-\delta\right)\right.\\
+ & \left.-\left(1-\chi\right)\Phi_{2}\left(k^{*}\left(s^{\prime}\right),k^{\prime}\right)\right]
+\end{align*}
+Iterate the policy function until convergence. 
+\item Update $d\left(s\right)$ from the binding dividends constraint.
+\item Update $\lambda\left(s\right)$ using \eqref{eq:d_foc}: 
+\begin{align*}
+\left(1+\lambda_{t}\left(s\right)\right) & =R_{t}\Lambda_{t,t+1}\mathbb{E}_{t}\left[1+\left(1-\chi\right)\lambda\left(s^{\prime}\right)\right]
+\end{align*}
+\item Check if borrowing constraint is actually not binding. If it is, compute
+the debt policy using \eqref{eq:dprime_currcons}. Solve \eqref{eq:kprime_currcorns}
+for the capital policy.
+\item Compute the value 
+\[
+V_{t}\left(s\right)=\begin{cases}
+\max\left\{ \mathcal{V}_{t}^{n}\left(k,d,z,\omega\right),\mathcal{V}_{t}^{p}\left(k,d,z,\omega\right)\right\}  & \text{if }x=0\\
+\mathcal{V}_{t}^{n}\left(k,d,z,\omega\right) & \text{if }x=1
+\end{cases}
+\]
+\end{enumerate}
+
+\subsection*{Stationary distribution}
+
+Let $\mu\left(k,x,d,z,\omega\right)$ denote the distribution of firms.
+The distribution evolves according to
+\begin{align*}
+\mu_{t+1}\left(s^{\prime}\right) & =\left(1-\chi\right)\int_{\mathbf{K}\times\mathbf{D}\times\mathbf{Z}\times\mathbf{\Omega}}\mathds{1}\left\{ \left(k^{\prime}\left(s\right),x^{\prime}\left(s\right),d^{\prime}\left(s\right)\right)\right\} \mu\left(dk,0,dd,dz,d\omega\right)\\
+ & +\left(1-\chi\right)\int_{\mathbf{K}\times\mathbf{D}\times\mathbf{Z}\times\mathbf{\Omega}}\left(1-\delta_{x}\right)\mathds{1}\left\{ \left(k^{\prime}\left(s\right),1,d^{\prime}\left(s\right)\right)\right\} \mu\left(dk,1,dd,dz,d\omega\right)\\
+ & +\left(1-\chi\right)\int_{\mathbf{K}\times\mathbf{D}\times\mathbf{Z}\times\mathbf{\Omega}}\left(\delta_{x}\right)\mathds{1}\left\{ \left(k^{\prime}\left(s\right),0,d^{\prime}\left(s\right)\right)\right\} \mu\left(dk,1,dd,dz,d\omega\right)\\
+ & +\chi\mu^{\text{new}}\left(s\right)
+\end{align*}
+Where $\mu^{\text{new}}\left(s\right)$ is the distribution of new
+firms.
+\end{document}

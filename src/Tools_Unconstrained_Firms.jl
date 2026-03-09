@@ -109,7 +109,7 @@ function solve_kstar(E_Unconstrained, Price_t, Param, K_guess=nothing)
 
         # Check convergence
         max_diff = maximum(abs.(K_new - K_old))
-        if max_diff < 1e-4
+        if max_diff < Param.tol_v / 100
             break
         end
         K_old .= K_new
@@ -191,7 +191,7 @@ function solve_msp(K_Unconstrained, E_Unconstrained, Price_tf, Param, Dmsp)
         TDmsp = update_msp(Dmsp, K_Unconstrained, E_Unconstrained, Price_tf, Param)
         # Check convergence of minimum savings policy
         max_diff = maximum(abs.(Dmsp - TDmsp))
-        if max_diff < 1e-4
+        if max_diff < Param.tol_v / 100
             break
         end
         Dmsp .= TDmsp
@@ -243,7 +243,7 @@ function value_uncons(Dmsp, V_Unconstrained, K_Unconstrained, E_Unconstrained, P
                     𝓥_p = vnow_base + vcont_p - c_x
                     # Engagement choice with hysteresis to prevent oscillation
                     # Only switch policy if benefit exceeds threshold
-                    hysteresis_tol = 1e-4
+                    hysteresis_tol = Param.tol_v * 100
                     if eval ≈ 0.0
                         # Currently not engaging: only start if 𝓥_p > 𝓥_n + tol
                         TE_Unconstrained[ik, 1, izω] = (𝓥_p > 𝓥_n + hysteresis_tol) ? 1.0 : 0.0
@@ -358,7 +358,7 @@ end
 
 
 ## Iterate to solve the unconstrained firm's problem
-function solve_unconstrained_firm(Param; Price_t = (R=1.04, SDF=1.0/1.04, pp=1.25), max_iter = 10, max_viter = 500)
+function solve_unconstrained_firm(Param; Price_t = (R=1.04, SDF=1.0/1.04, pp=1.25), max_iter = 10, max_viter = 500, verbose = true)
     @unpack (ObjGrid_K, ObjGrid_X, ObjGrid_Zω) = Param
     Nk, Nx, Nzω = ObjGrid_K.N, ObjGrid_X.N, ObjGrid_Zω.N
 
@@ -384,7 +384,7 @@ function solve_unconstrained_firm(Param; Price_t = (R=1.04, SDF=1.0/1.04, pp=1.2
                 TV_Unconstrained, TE_Unconstrained = value_uncons(Dmsp, V_Unconstrained, K_Unconstrained, E_Unconstrained, Price_t, Price_t, Param)
                 vdiff = maximum(abs.(TV_Unconstrained .- V_Unconstrained))
                 V_Unconstrained .= 0.9 .* V_Unconstrained .+ 0.1 .* TV_Unconstrained
-                if vdiff < 1e-8
+                if vdiff < Param.tol_v
                     break
                 end
             end
@@ -394,16 +394,20 @@ function solve_unconstrained_firm(Param; Price_t = (R=1.04, SDF=1.0/1.04, pp=1.2
         avg_diff = mean(abs.(E_Unconstrained - TE_Unconstrained))
 
         # Print table
-        println("\n---------------------------------------------------------------")
-        println("  Unconstrained step    Iters        Max Diff             Secs    ")
-        println("---------------------------------------------------------------")
-        println("  Engagement (Avg)    $(lpad(iter, 7))  $(lpad(round(avg_diff, sigdigits=6), 14))  $(lpad(round(t_iter, digits=3), 15)) ")
-        println("  K* (Capital)        $(lpad(niter_k, 7))  $(lpad(round(diff_k, sigdigits=6), 14))  $(lpad(round(t_kstar, digits=3), 15)) ")
-        println("  MSP (Min Savings)   $(lpad(niter_msp, 7))  $(lpad(round(diff_msp, sigdigits=6), 14))  $(lpad(round(t_msp, digits=3), 15)) ")
-        println("---------------------------------------------------------------\n")
+        if verbose
+            println("\n---------------------------------------------------------------")
+            println("  Unconstrained step    Iters        Max Diff             Secs    ")
+            println("---------------------------------------------------------------")
+            println("  Engagement (Avg)    $(lpad(iter, 7))  $(lpad(round(avg_diff, sigdigits=6), 14))  $(lpad(round(t_iter, digits=3), 15)) ")
+            println("  K* (Capital)        $(lpad(niter_k, 7))  $(lpad(round(diff_k, sigdigits=6), 14))  $(lpad(round(t_kstar, digits=3), 15)) ")
+            println("  MSP (Min Savings)   $(lpad(niter_msp, 7))  $(lpad(round(diff_msp, sigdigits=6), 14))  $(lpad(round(t_msp, digits=3), 15)) ")
+            println("---------------------------------------------------------------\n")
+        end
 
-        if avg_diff < 1e-4
-            println("✓ Convergence achieved after ", iter, " iterations.")
+        if avg_diff < Param.tol_v * 100
+            if verbose
+                println("✓ Unconstrained problem converged after ", iter, " iterations.")
+            end
             break
         end
         # Update engagement policy given updated value function

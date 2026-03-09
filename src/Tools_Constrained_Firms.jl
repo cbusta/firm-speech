@@ -121,7 +121,7 @@ function solve_k(Gd, Ge, Gλ, Price_t, Param, Gk_guess=nothing)
 
         # Check convergence of policy function iteration
         max_diff = maximum(abs.(K_new - K_old))
-        if max_diff < 1e-4
+        if max_diff < Param.tol_v / 100
             break
         end
         K_old .= K_new
@@ -367,7 +367,7 @@ function value_constrained(V_Constrained, Gk, Gd, Ge, Price_t, Price_tf, Param)
                         𝓥_p = div_base - c_x + vcont_p
 
                         # Engagement choice update with hysteresis to prevent oscillation
-                        hysteresis_tol = 1e-4
+                        hysteresis_tol = Param.tol_v * 100
                         if eval ≈ 0.0
                             # Currently not engaging: only start if 𝓥_p > 𝓥_n + tol
                             TE_Constrained[id, ik, 1, izω] = (𝓥_p > 𝓥_n + hysteresis_tol) ? 1.0 : 0.0
@@ -385,8 +385,8 @@ function value_constrained(V_Constrained, Gk, Gd, Ge, Price_t, Price_tf, Param)
                                                           Grid_D, Grid_K, Grid_X, Grid_Zω, Prob_Zω, Prob_X,
                                                           α, δ, χ, Nx, Nzω)
                         vnow = div_base
-                        # No engagement update for x=1 (engagement already established)
-                        TE_Constrained[id, ik, ix, izω] = Ge[id, ik, ix, izω]
+                        # No engagement update for x=1 (engagement already established to be 0.0)
+                        # TE_Constrained[id, ik, ix, izω] = 0.0 # Not needed, so we can comment this line
                     end
 
                     # Update value function for constrained firm
@@ -401,18 +401,18 @@ end
 
 
 ## Main solver: Iterate to solve the constrained firm's problem
-function solve_constrained_firm(Param; Price_t = (R=1.04, SDF=1.0/1.04, pp=1.25), max_iter = 10, max_viter = 500)
+function solve_constrained_firm(Param; Price_t = (R=1.04, SDF=1.0/1.04, pp=1.25), max_iter = 10, max_viter = 500, verbose = true)
     @unpack (ObjGrid_D, ObjGrid_K, ObjGrid_X, ObjGrid_Zω) = Param
     @unpack (δ) = Param
     Nd, Nk, Nx, Nzω = ObjGrid_D.N, ObjGrid_K.N, ObjGrid_X.N, ObjGrid_Zω.N
 
     # Initialize policy functions and value function
     V_Constrained  = zeros(Nd, Nk, Nx, Nzω)
-    Ge = zeros(Nd, Nk, Nx, Nzω)           # Engagement policy
-    Gλ = zeros(Nd, Nk, Nx, Nzω)           # Multiplier on dividend constraint
-    Gk = zeros(Nd, Nk, Nx, Nzω)           # Capital policy
+    Ge  = zeros(Nd, Nk, Nx, Nzω)           # Engagement policy
+    Gλ  = zeros(Nd, Nk, Nx, Nzω)           # Multiplier on dividend constraint
+    Gk  = zeros(Nd, Nk, Nx, Nzω)           # Capital policy
     Gk .= (1.0 - δ) .* reshape(ObjGrid_K.Values, 1, Nk, 1, 1)  # Initial guess
-    Gd = zeros(Nd, Nk, Nx, Nzω)           # Debt policy
+    Gd  = zeros(Nd, Nk, Nx, Nzω)           # Debt policy
 
     TE_Constrained = copy(Ge)
 
@@ -420,17 +420,17 @@ function solve_constrained_firm(Param; Price_t = (R=1.04, SDF=1.0/1.04, pp=1.25)
         t_iter = @elapsed begin
             # Step 1: Solve capital policy k′ given (Gd, Ge, Gλ)
             Gk_guess = (iter == 1) ? nothing : Gk
-            t_kstar = @elapsed Gk, niter_k, diff_k = solve_k(Gd, Ge, Gλ, Price_t, Param, Gk_guess)
+            t_kstar  = @elapsed Gk, niter_k, diff_k = solve_k(Gd, Ge, Gλ, Price_t, Param, Gk_guess)
 
             # Step 2: Update debt policy Gd from binding dividend constraint
-            t_gd = @elapsed Gd_new = update_Gd(Gd, Gk, Ge, Price_t, Param)
+            t_gd   = @elapsed Gd_new = update_Gd(Gd, Gk, Ge, Price_t, Param)
             diff_d = maximum(abs.(Gd_new - Gd))
-            Gd .= Gd_new
+            Gd    .= Gd_new
 
             # Step 3: Update multiplier Gλ
-            t_gλ = @elapsed Gλ_new = update_Gλ(Gd, Gk, Ge, Gλ, Price_t, Param)
+            t_gλ   = @elapsed Gλ_new = update_Gλ(Gd, Gk, Ge, Gλ, Price_t, Param)
             diff_λ = maximum(abs.(Gλ_new - Gλ))
-            Gλ .= Gλ_new
+            Gλ    .= Gλ_new
 
             # Step 4: Update value function and engagement policy (value iteration)
             for viter in 1:max_viter
@@ -438,7 +438,7 @@ function solve_constrained_firm(Param; Price_t = (R=1.04, SDF=1.0/1.04, pp=1.25)
                 vdiff = maximum(abs.(TV_Constrained .- V_Constrained))
                 # Dampening for stability
                 V_Constrained .= 0.9 .* V_Constrained .+ 0.1 .* TV_Constrained
-                if vdiff < 1e-8
+                if vdiff < Param.tol_v
                     break
                 end
             end
@@ -448,17 +448,21 @@ function solve_constrained_firm(Param; Price_t = (R=1.04, SDF=1.0/1.04, pp=1.25)
         avg_diff = mean(abs.(Ge - TE_Constrained))
 
         # Print progress table
-        println("\n---------------------------------------------------------------")
-        println("  Constrained step      Iters        Max Diff             Secs    ")
-        println("---------------------------------------------------------------")
-        println("  Engagement (Avg)    $(lpad(iter, 7))  $(lpad(round(avg_diff, sigdigits=6), 14))  $(lpad(round(t_iter, digits=3), 15)) ")
-        println("  K* (Capital)        $(lpad(niter_k, 7))  $(lpad(round(diff_k, sigdigits=6), 14))  $(lpad(round(t_kstar, digits=3), 15)) ")
-        println("  Gd (Debt)                    -  $(lpad(round(diff_d, sigdigits=6), 14))  $(lpad(round(t_gd, digits=3), 15)) ")
-        println("  Gλ (Multiplier)              -  $(lpad(round(diff_λ, sigdigits=6), 14))  $(lpad(round(t_gλ, digits=3), 15)) ")
-        println("---------------------------------------------------------------\n")
+        if verbose
+            println("\n---------------------------------------------------------------")
+            println("  Constrained step      Iters        Max Diff             Secs    ")
+            println("---------------------------------------------------------------")
+            println("  Engagement (Avg)    $(lpad(iter, 7))  $(lpad(round(avg_diff, sigdigits=6), 14))  $(lpad(round(t_iter, digits=3), 15)) ")
+            println("  K* (Capital)        $(lpad(niter_k, 7))  $(lpad(round(diff_k, sigdigits=6), 14))  $(lpad(round(t_kstar, digits=3), 15)) ")
+            println("  Gd (Debt)                 -  $(lpad(round(diff_d, sigdigits=6), 14))  $(lpad(round(t_gd, digits=3), 15)) ")
+            println("  Gλ (Multiplier)           -  $(lpad(round(diff_λ, sigdigits=6), 14))  $(lpad(round(t_gλ, digits=3), 15)) ")
+            println("---------------------------------------------------------------\n")
+        end
 
-        if avg_diff < 1e-4
-            println("✓ Constrained problem converged after ", iter, " iterations.")
+        if avg_diff < Param.tol_v * 100
+            if verbose
+                println("✓ Constrained problem converged after ", iter, " iterations.")
+            end
             break
         end
 

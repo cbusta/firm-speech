@@ -43,7 +43,7 @@ end
 # -------------------------------------------------------------------
 # Create parameter structure
 # -------------------------------------------------------------------
-struct Struct_Param{T,GK,DK,GD,DD,GX,GW,GZ,GZW}
+struct Struct_Param{T,GK,DK,GD,DD,GX,GW,GZ,GZW,ED}
     # Preference
     β::T                      # Discount factor
     σ::T                      # Coefficient of relative risk aversion
@@ -73,6 +73,13 @@ struct Struct_Param{T,GK,DK,GD,DD,GX,GW,GZ,GZW}
     ObjGrid_ω::GW             # Taste shifter grid object
     ObjGrid_Z::GZ             # Productivity shock grid object
     ObjGrid_Zω::GZW           # Joint (Z,ω) process grid object
+
+    # Entry distribution parameters
+    EntryDist::ED             # Entry distribution specification
+
+    # Numerical parameters
+    tol_v::T                  # Tolerance for value function iteration
+    tol_μ::T                  # Tolerance for stationary distribution iteration
 end
 
 function Get_Params(;
@@ -131,7 +138,20 @@ function Get_Params(;
     ObjGrid_Z = make_stochproc(:tauchen, μ=μ_z, σ=σ_z, ρ=ρ_z, N=Nz, transf=:exp, name="Idiosyncratic Productivity Grid", width=3.0),
     
     # Joint (Z,ω) process (computed from individual processes)
-    ObjGrid_Zω = make_joint_stochproc(ObjGrid_Z, ObjGrid_ω, name="Joint (Z,ω)")
+    ObjGrid_Zω = make_joint_stochproc(ObjGrid_Z, ObjGrid_ω, name="Joint (Z,ω)"),
+
+    # Entry distribution parameters
+    # Entrants start with d=d_entry, x=0, k drawn from k_dist, (z,ω) from zω_dist
+    d_entry    = 0.0,                # Entry debt level
+    k_dist     = :pareto,         # Capital distribution: :lognormal or :pareto
+    k_loc      = 0.05,               # Location parameter (mean for lognormal, scale for pareto)
+    k_scale    = 0.05,               # Scale parameter (std for lognormal, shape for pareto)
+    zω_dist    = :ergodic,           # (z,ω) distribution: :ergodic or :uniform
+    EntryDist  = (; d_entry, k_dist, k_loc, k_scale, zω_dist),
+
+    # Numerical parameters
+    tol_v = 1e-6,                # Tolerance for value function iteration
+    tol_μ = 1e-12,               # Tolerance for stationary distribution iteration
     )
 
     return Struct_Param(
@@ -140,6 +160,8 @@ function Get_Params(;
         ObjGrid_K, ObjDGrid_K,
         ObjGrid_D, ObjDGrid_D,
         δ_x, c_x, ObjGrid_X,
-        ObjGrid_ω, ObjGrid_Z, ObjGrid_Zω
+        ObjGrid_ω, ObjGrid_Z, ObjGrid_Zω,
+        EntryDist, 
+        tol_v, tol_μ
     )
 end
