@@ -337,6 +337,28 @@ function value_uncons_vcont_x1(ik, izω, k′, d′, Price_t, Price_tf, V_Uncons
 end
 
 
+## Update value function with iteration loop for unconstrained firm
+# This function runs the full value iteration until convergence
+# It can be used for steady state (Price_t = Price_tf) or transitional dynamics (Price_t ≠ Price_tf)
+function update_value_unconstrained(V_Unconstrained, E_Unconstrained, K_Unconstrained, Dmsp, Price_t, Price_tf, Param; max_viter=500)
+    V_new = copy(V_Unconstrained)
+    E_new = copy(E_Unconstrained)
+
+    for viter in 1:max_viter
+        TV_Unconstrained, TE_Unconstrained = value_uncons(Dmsp, V_new, K_Unconstrained, E_new, Price_t, Price_tf, Param)
+        vdiff = maximum(abs.(TV_Unconstrained .- V_new))
+        # Dampening for stability
+        V_new .= 0.9 .* V_new .+ 0.1 .* TV_Unconstrained
+        E_new .= TE_Unconstrained
+        if vdiff < Param.tol_v
+            break
+        end
+    end
+
+    return V_new, E_new
+end
+
+
 ## Get unconstrained threshold
 function get_unconstrained_threshold(K_Unconstrained, Dmsp, Price_t, Param)
     @unpack (ObjGrid_K, ObjGrid_X, ObjGrid_Zω) = Param
@@ -380,14 +402,10 @@ function solve_unconstrained_firm(Param; Price_t = (R=1.04, SDF=1.0/1.04, pp=1.2
             Dmsp .= TDmsp
 
             # Update value function given optimal policies for unconstrained firm
-            for viter in 1:max_viter
-                TV_Unconstrained, TE_Unconstrained = value_uncons(Dmsp, V_Unconstrained, K_Unconstrained, E_Unconstrained, Price_t, Price_t, Param)
-                vdiff = maximum(abs.(TV_Unconstrained .- V_Unconstrained))
-                V_Unconstrained .= 0.9 .* V_Unconstrained .+ 0.1 .* TV_Unconstrained
-                if vdiff < Param.tol_v
-                    break
-                end
-            end
+            V_Unconstrained, TE_Unconstrained = update_value_unconstrained(
+                V_Unconstrained, E_Unconstrained, K_Unconstrained, Dmsp,
+                Price_t, Price_t, Param; max_viter=max_viter
+            )
         end
 
         # Check convergence of engagement policy

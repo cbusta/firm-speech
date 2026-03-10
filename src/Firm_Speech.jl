@@ -21,17 +21,9 @@ Param = Get_Params()
 Param.ObjGrid_X
 
 
-## Solve the firm problem and get combined solution
-# Option 1: Solve at fixed prices
-Sol_Unconstrained = solve_unconstrained_firm(Param)
-Sol_Constrained   = solve_constrained_firm(Param; Price_t = Sol_Unconstrained.Price_t)
-Sol_Firm = value_firm(Sol_Unconstrained, Sol_Constrained, Sol_Unconstrained.Price_t; Param)
-
-# Option 2: Solve for steady state equilibrium (uncomment to use)
-# Steady = solve_steady(Param; pp_lo=0.5, pp_hi=3.0, R=1.04, verbose=true)
-# Sol_Unconstrained = Steady.Sol_Unconstrained
-# Sol_Constrained   = Steady.Sol_Constrained
-# Sol_Firm          = Steady.Sol_Firm
+## Solve partial equilibrium (given prices)
+Price_t = (R=1.04, SDF=1.0/1.04, pp=1.25)
+Steady = excess_cNP(Price_t, Param; verbose=true)
 
 
 ## Save results to jld2 file
@@ -40,14 +32,6 @@ results_dir = joinpath(dirname(@__DIR__), "results")
 mkpath(results_dir)
 # Save results
 @save joinpath(results_dir, "Firm_Solutions.jld2") Sol_Unconstrained Sol_Constrained Sol_Firm Param
-
-
-## Given some prices and solve unconstrained problem in hard scope
-V_Unconstrained   = Sol_Unconstrained.V_Unconstrained
-E_Unconstrained   = Sol_Unconstrained.E_Unconstrained
-K_Unconstrained   = Sol_Unconstrained.K_Unconstrained
-Dmsp    = Sol_Unconstrained.Dmsp
-Price_t = Sol_Unconstrained.Price_t
 
 
 ## Analysis
@@ -65,18 +49,6 @@ plot(p1, p2, layout=(2, 1), size=(600, 600))
 plot(Param.ObjGrid_K.Values, E_Unconstrained[:, 1, 1], lw = 3, label="x=0, izω=1", 
      xlabel="Current Capital (k)", ylabel="Engagement Policy (E)", title="Engagement Policy vs Capital (ix=1, izω=1)")
 plot!(Param.ObjGrid_K.Values, E_Unconstrained[:, 1, 23], lw = 3, label="x=0, izω=23")
-
-
-
-## Solve for stationary distribution
-Sol_Dist = solve_stationary_distribution(Sol_Firm, Param)
-
-# Compute and print aggregates
-agg = compute_aggregates(Sol_Dist.μ, Sol_Firm, Sol_Unconstrained, Param, Price_t)
-print_aggregates(agg)
-
-# Analyze engagement by firm size
-size_stats = engagement_by_size(Sol_Dist.μ, Sol_Firm, Param)
 
 
 ## Plot the distribution of entrants over capital
@@ -208,11 +180,3 @@ plot(1:100, fraction_x1_by_size, lw = 3, label="Fraction with x=1",
      xlabel="Size Percentile", ylabel="Fraction with x=1", title="Fraction of Firms with x=1 by Size Percentile")
 
 
-
-## Market clearing for the non-differentiated good
-# The non-differentiated good is used for investment, including capital adj costs, and political engagement costs
-demand_cNP = agg.agg_investment + agg.agg_adj_cost + agg.agg_engagement_cost
-excess_demand_cNP = demand_cNP - agg.agg_cNP
-println("Aggregate demand for non-differentiated good: $demand_cNP")
-println("Aggregate supply of non-differentiated good:  $(agg.agg_cNP)")
-println("Excess demand for non-differentiated good:    $excess_demand_cNP")
